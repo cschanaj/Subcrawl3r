@@ -1,0 +1,27 @@
+{
+	"name": "subcrawl3r",
+	"version": "0.0.1",
+	"description": "Search for sub-domains by crawling.",
+	"main": "index.js",
+	"bin": "./index.js",
+	"dependencies": {
+		"easycrawler": "latest",
+		"cheerio": "latest",
+		"yargs": "latest"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/cschanaj/Subcrawl3r.git"
+	},
+	"keywords": [
+		"https-everywhere",
+		"sub-domains",
+		"crawler",
+		"crawl"
+	],
+	"author": "Pasu Chan <cschanj@connect.ust.hk>",
+	"license": "GPL-3.0"
+}
