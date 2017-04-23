@@ -45,7 +45,7 @@ let myappend = function(src) {
 		}
 
 		const myURL = new URL(src)
-		const regex = new RegExp(domain + '$')
+		const regex = new RegExp( '(?:^|\.)'domain + '$')
 		const hostname = myURL.hostname
 
 		if(hostname.match(regex) != null) {
