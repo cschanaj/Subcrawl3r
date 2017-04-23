@@ -124,22 +124,23 @@ let crawler = new Crawler({
 				keys.push(key)
 			}
 
+
 			keys.sort(function(a, b) {
 				let toka = a.split('.')
 				let tokb = b.split('.')
+				
+				let tokalen = toka.length
+				let tokblen = tokb.length
 
-				let tokalen = toka.length - 1
-				let tokblen = tokb.length - 1
-
-				while(tokalen >= 0 && tokblen >= 0) {
-					if(toka[tokalen] != tokb[tokalen]) {
-						return toka[tokalen] < tokb[tokblen] ? -1 : 1
+				while(tokalen != -1 && tokblen != -1) {
+					if(toka[tokalen] === tokb[tokblen]) {
+						tokalen--
+						tokblen--
 					} else {
-						tokalen = tokalen - 1
-						tokblen = tokblen - 1
+						return toka[tokalen] < tokb[tokblen] ? -1 : 1
 					}
 				}
-				return tokalen - tokblen ? -1 : 1
+				return tokalen > tokblen ? 1 : -1
 			})
 
 			keys.forEach(function(element, index, arr) {
