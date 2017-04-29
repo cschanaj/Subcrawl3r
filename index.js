@@ -33,7 +33,6 @@ if(url != null && url.match(/^http/) != null) {
 }
 
 let domain = argv.domain || argv.url
-let keyOnly = argv.keyOnly != null ? true : false
 let thread = argv.thread || 4
 let depth = argv.depth || 3
 let debug = argv.debug
@@ -118,37 +117,33 @@ let crawler = new Crawler({
 		})
 
 		// constructs sorted array of URL(s)
-		if(keyOnly) {
-			let keys = []
-			for(var key in res) {
-				keys.push(key)
-			}
-
-
-			keys.sort(function(a, b) {
-				let toka = a.split('.')
-				let tokb = b.split('.')
-				
-				let tokalen = toka.length
-				let tokblen = tokb.length
-
-				while(tokalen != -1 && tokblen != -1) {
-					if(toka[tokalen] === tokb[tokblen]) {
-						tokalen--
-						tokblen--
-					} else {
-						return toka[tokalen] < tokb[tokblen] ? -1 : 1
-					}
-				}
-				return tokalen > tokblen ? 1 : -1
+		let keys = []
+		for(var key in res) {
+			keys.push({
+				domain: key,
+				data: Array.from(res[key])
 			})
-
-			keys.forEach(function(element, index, arr) {
-				console.log(element)
-			})
-		} else {
-			console.log(res)
 		}
+
+		keys.sort(function(a, b) {
+			let toka = a.domain.split('.')
+			let tokb = b.domain.split('.')
+			
+			let tokalen = toka.length
+			let tokblen = tokb.length
+
+			while(tokalen != -1 && tokblen != -1) {
+				if(toka[tokalen] === tokb[tokblen]) {
+					tokalen--
+					tokblen--
+				} else {
+					return toka[tokalen] < tokb[tokblen] ? -1 : 1
+				}
+			}
+			return tokalen > tokblen ? 1 : -1
+		})
+		
+		console.log(JSON.stringify(keys, null, 2))
 	}
 })
 
