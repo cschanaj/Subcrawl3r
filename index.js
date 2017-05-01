@@ -37,22 +37,18 @@ let thread = argv.thread || 4
 let depth = argv.depth || 3
 let debug = argv.debug
 
-let myappend = function(src) {
-	if(src != null && src.match(/^https?:/) != null) {
-		if(src.indexOf('https:') !== -1) {
-			src = src.replace(/^https:/, 'http:')
-		}
+let myappend = function(src, base) {
+	if(src != null) {
+		const myUrl = new URL(src, base)
+		const regex = new RegExp('(?:\^|\\.)' + domain + '$')
+		const hostname = myUrl != null ? myUrl.hostname : null
 
-		const myURL = new URL(src)
-		const regex = new RegExp( '(?:\^|\\.)' + domain + '$')
-		const hostname = myURL.hostname
-
-		if(hostname.match(regex) != null) {
+		if(hostname != null && hostname.match(regex) != null) {
 			if(res.has(hostname) == false) {
 				res[hostname] = new Set()
 			}
 
-			res[hostname].add(src)
+			res[hostname].add(myUrl.href)
 		}
 	}
 }
@@ -67,7 +63,7 @@ let crawler = new Crawler({
 	},
 
 	onlyCrawl: [
-		domain
+		
 	],
 
 	onSuccess: function(data) {
@@ -77,7 +73,7 @@ let crawler = new Crawler({
 			$(className).each(function(){
 				var src = $(this).attr(attribute)
 				if(src != null) {
-					myappend(src)
+					myappend(src, data.url)
 				}
 			})
 		}
